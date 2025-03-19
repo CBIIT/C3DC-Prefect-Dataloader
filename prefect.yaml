@@ -20,7 +20,7 @@ pull:
   - prefect.deployments.steps.git_clone:
       id: clone-step
       repository: https://github.com/CBIIT/CCDI-C3DC-Dataloader.git
-      branch: C3DC-1369_dataloader
+      branch: main
       include_submodules: True
   - prefect.projects.steps.pip_install_requirements:
       requirements_file: requirements.txt
