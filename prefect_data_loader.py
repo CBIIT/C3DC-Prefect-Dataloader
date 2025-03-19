@@ -241,9 +241,6 @@ def c3dc_hub_data_loader(
         pass
     s3_folder = f'{metadata_folder}'
 
-    print(os.listdir(".."))
-    print(os.listdir("."))
-
     log_folder = f"prefect_c3dc_dataloader_{get_time()}"
     if runner.endswith("/"):
         runner= runner[:-1]
@@ -261,8 +258,6 @@ def c3dc_hub_data_loader(
     prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
 
     print("start loading data")
-    # os.mkdir("data")
-    # os.mkdir("tmp")
 
     load_data(
         s3_bucket=s3_bucket,

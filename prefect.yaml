@@ -4,7 +4,7 @@
 
 # Generic metadata about this project
 name: C3DC Hub Data Loader
-prefect-version: 2.14.19
+prefect-version: 2.14.10
 
 # build section allows you to manage and build docker images
 build: null
@@ -16,7 +16,7 @@ push: null
 pull:
   - prefect.deployments.steps.git_clone:
       repository: https://github.com/CBIIT/c3dc-model.git
-      branch: 1.4.0
+      branch: 2.1.0
   - prefect.deployments.steps.git_clone:
       id: clone-step
       repository: https://github.com/CBIIT/CCDI-C3DC-Dataloader.git
@@ -40,7 +40,7 @@ deployments:
       secret_name: "{{ prefect.variables.c3dc_dataloader_dev_secret_name }}"
       metadata_folder: ""
       runner: ""
-      model_tag: "1.4.0"
+      model_tag: "2.1.0"
       cheat_mode: False
       dry_run: False
       wipe_db: False
@@ -55,7 +55,7 @@ deployments:
     pull:
       - prefect.deployments.steps.git_clone:
           repository: https://github.com/CBIIT/c3dc-model.git
-          branch: 1.4.0
+          branch: 2.1.0
       - prefect.deployments.steps.git_clone:
           id: clone-step
           repository: https://github.com/CBIIT/C3DC-Prefect-Dataloader.git
