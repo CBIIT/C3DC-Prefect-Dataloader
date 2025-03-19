@@ -32,6 +32,10 @@ def get_time() -> str:
     return dt_string
 
 
+def convert_false_to_string(value):
+    return "False" if value is False else value
+
+
 @task(log_prints=True)
 def create_prop_file(
     model_yaml: str, delimiter: str, domain_value: str = "Unknown.domain.nci.nih.gov"
@@ -237,6 +241,15 @@ def c3dc_hub_data_loader(
         pass
     s3_folder = f'{metadata_folder}'
 
+    print(os.listdir(".."))
+    print(os.listdir("."))
+
+    # turn False value to string "False"
+    cheat_mode = convert_false_to_string(cheat_mode)
+    dry_run = convert_false_to_string(dry_run)
+    wipe_db = convert_false_to_string(wipe_db)
+    split_transaction = convert_false_to_string(split_transaction)
+
     log_folder = f"prefect_c3dc_dataloader_{get_time()}"
     if runner.endswith("/"):
         runner= runner[:-1]
@@ -251,13 +264,13 @@ def c3dc_hub_data_loader(
     # hard coded value for C3DC
     domain_value = "clinicalcommons.ccdi.cancer.gov"
     metadata_delimiter = ";"
-    prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
+    # prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
+    prop_file = "./icdc-dataloader/config/props-c3dc.yml"
 
     print("start loading data")
     # os.mkdir("data")
     # os.mkdir("tmp")
-    print(os.listdir(".."))
-    print(os.listdir("."))
+
     load_data(
         s3_bucket=s3_bucket,
         s3_folder=s3_folder,
