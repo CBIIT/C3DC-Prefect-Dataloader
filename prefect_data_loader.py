@@ -244,6 +244,9 @@ def c3dc_hub_data_loader(
         pass
     upload_log_dir = f's3://{s3_bucket}/{runner}/{log_folder}/logs'
 
+    # print parent directory
+    print(os.listdir(".."))
+
     schemas = [
         f"../c3dc-model-{model_tag}/model-desc/c3dc-model.yml",
         f"../c3dc-model-{model_tag}/model-desc/c3dc-model-props.yml",
@@ -254,8 +257,8 @@ def c3dc_hub_data_loader(
     prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
 
     print("start loading data")
-    #os.mkdir("data")
-    #os.mkdir("tmp")
+    # os.mkdir("data")
+    # os.mkdir("tmp")
     print(os.listdir("."))
     load_data(
         s3_bucket=s3_bucket,
