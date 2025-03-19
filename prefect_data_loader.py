@@ -244,12 +244,6 @@ def c3dc_hub_data_loader(
     print(os.listdir(".."))
     print(os.listdir("."))
 
-    # turn False value to string "False"
-    cheat_mode = convert_false_to_string(cheat_mode)
-    dry_run = convert_false_to_string(dry_run)
-    wipe_db = convert_false_to_string(wipe_db)
-    split_transaction = convert_false_to_string(split_transaction)
-
     log_folder = f"prefect_c3dc_dataloader_{get_time()}"
     if runner.endswith("/"):
         runner= runner[:-1]
