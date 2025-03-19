@@ -256,10 +256,9 @@ def c3dc_hub_data_loader(
         f"../c3dc-model/model-desc/c3dc-model-props.yml",
     ]
     # hard coded value for C3DC
-    domain_value = "clinicalcommons.ccdi.cancer.gov"
+    domain_value = "c3dc.cancer.gov"
     metadata_delimiter = ";"
-    # prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
-    prop_file = "./icdc-dataloader/config/props-c3dc.yml"
+    prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
 
     print("start loading data")
     # os.mkdir("data")
