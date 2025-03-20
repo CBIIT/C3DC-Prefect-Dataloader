@@ -46,7 +46,6 @@ def get_git_tag(repo_path=".") -> str:
         tag = subprocess.check_output(
             ["git", "describe", "--tags", "--exact-match"], cwd=repo_path, text=True
         ).strip()
-        print(f"Current tag: {tag}")
         return tag
     except subprocess.CalledProcessError:
         print("No tag found for the current commit.")
@@ -256,7 +255,7 @@ def c3dc_hub_data_loader(
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
     pulled_model_branch = get_git_tag(repo_path="../c3dc-model/")
     print(f"Provided model tag: {model_tag}")
-    print(f"Pulled c3dc-model branch: {pulled_model_branch}")
+    print(f"Pulled c3dc-model tag: {pulled_model_branch}")
     if model_tag == pulled_model_branch:
         print("The model branch pulled is the same as the input model tag")
     else:
