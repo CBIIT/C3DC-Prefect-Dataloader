@@ -43,9 +43,12 @@ def get_git_branch(repo_path=".") -> str:
         str: _description_
     """    
     try:
+        current_dir = os.getcwd()
+        os.chdir(repo_path)
         branch = subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, text=True
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=".", text=True
         ).strip()
+        os.chdir(current_dir)
         return branch
     except subprocess.CalledProcessError:
         return None  # Not a valid git repo or an error occurred
