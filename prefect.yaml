@@ -1,0 +1,67 @@
+# Welcome to your prefect.yaml file! You can use this file for storing and managing
+# configuration for deploying your flows. We recommend committing this file to source
+# control along with your flow code.
+
+# Generic metadata about this project
+name: C3DC Hub Data Loader
+prefect-version: 2.14.19
+
+# build section allows you to manage and build docker images
+build: null
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: https://github.com/CBIIT/c3dc-model.git
+      branch: 2.1.0
+  - prefect.deployments.steps.git_clone:
+      id: clone-step
+      repository: https://github.com/CBIIT/CCDI-C3DC-Dataloader.git
+      branch: main
+      include_submodules: True
+  - prefect.projects.steps.pip_install_requirements:
+      requirements_file: requirements.txt
+      directory: "{{ clone-step.directory }}"
+      stream_output: False
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+  - name: C3DC-data-loading-DEV
+    version: null
+    tags: ["C3DC", "DEV", "TEST"]
+    description: null
+    schedule: {}
+    flow_name: null
+    entrypoint: prefect_data_loader.py:c3dc_hub_data_loader
+    parameters:
+      secret_name: "{{ prefect.variables.c3dc_dataloader_dev_secret_name }}"
+      metadata_folder: ""
+      runner: ""
+      model_tag: "2.1.0"
+      cheat_mode: False
+      dry_run: False
+      wipe_db: False
+      mode: "upsert"
+      split_transaction: True
+    work_pool:
+      name: ccdi-c3dc-16gb
+      work_queue_name: default
+      job_variables:
+        env:
+          PREFECT_LOGGING_EXTRA_LOGGERS: "Data Loader,Loader,ICDC Schema,S3 Bucket,Bento Config,Copier,ESLoader,FileLoader,File Loader,Model Converter,Props,UUID_util,Bento_adapter,SQS,Visibility Extender,VisitCreator,VisitCreator,Props"
+    pull:
+      - prefect.deployments.steps.git_clone:
+          repository: https://github.com/CBIIT/c3dc-model.git
+          branch: 2.1.0
+      - prefect.deployments.steps.git_clone:
+          id: clone-step
+          repository: https://github.com/CBIIT/C3DC-Prefect-Dataloader.git
+          branch: main
+          include_submodules: True
+      - prefect.projects.steps.pip_install_requirements:
+          requirements_file: requirements.txt
+          directory: "{{ clone-step.directory }}"
+          stream_output: False

@@ -1,0 +1,4 @@
+[submodule "icdc-dataloader"]
+	path = icdc-dataloader
+	url = https://github.com/CBIIT/icdc-dataloader
+	branch = 3.0.0_Wei_disable_backup
