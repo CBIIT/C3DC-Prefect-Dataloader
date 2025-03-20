@@ -43,10 +43,11 @@ def get_git_branch(repo_path=".") -> str:
         str: _description_
     """    
     try:
-        current_dir = os.getcwd()
+        current_dir = os.path.abspath(os.getcwd())
+        repo_path = os.path.abspath(repo_path)
         os.chdir(repo_path)
         branch = subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=".", text=True
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, text=True
         ).strip()
         os.chdir(current_dir)
         return branch
