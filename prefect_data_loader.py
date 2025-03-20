@@ -73,8 +73,7 @@ def create_prop_file(
     return_dict["Properties"]["delimiter"] = delimiter
     with open(model_yaml, "r") as model:
         model_dict = yaml.safe_load(model)
-    # wanna make sure it was using 1.4.0
-    print(json.dumps(model_dict, indent=4))
+    #print(json.dumps(model_dict, indent=4))
     node_list =  list(model_dict["Nodes"].keys())
     plural_dict = {}
     id_dict = {}
@@ -270,6 +269,7 @@ def c3dc_hub_data_loader(
         pass
     s3_folder = f'{metadata_folder}'
 
+    # create log upload directory
     log_folder = f"prefect_c3dc_dataloader_{get_time()}"
     if runner.endswith("/"):
         runner= runner[:-1]
@@ -282,7 +282,7 @@ def c3dc_hub_data_loader(
         f"../c3dc-model/model-desc/c3dc-model-props.yml",
     ]
     # hard coded value for C3DC
-    domain_value = "c3dc.cancer.gov"
+    domain_value = "clinicalcommons.ccdi.cancer.gov"
     metadata_delimiter = ";"
     prop_file = create_prop_file(model_yaml=schemas[0], delimiter=metadata_delimiter, domain_value=domain_value)
 
