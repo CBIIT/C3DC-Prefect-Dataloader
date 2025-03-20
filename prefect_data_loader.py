@@ -33,26 +33,24 @@ def get_time() -> str:
     return dt_string
 
 
-def get_git_branch(repo_path=".") -> str:
-    """_summary_
+def get_git_tag(repo_path=".") -> str:
+    """get the tag number of a repo
 
     Args:
-        repo_path (str, optional): _description_. Defaults to ".".
+        repo_path (str, optional): repo path. Defaults to ".".
 
     Returns:
-        str: _description_
+        str: tag name
     """    
     try:
-        current_dir = os.path.abspath(os.getcwd())
-        repo_path = os.path.abspath(repo_path)
-        os.chdir(repo_path)
-        branch = subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, text=True
+        tag = subprocess.check_output(
+            ["git", "describe", "--tags", "--exact-match"], cwd=repo_path, text=True
         ).strip()
-        os.chdir(current_dir)
-        return branch
+        print(f"Current tag: {tag}")
+        return tag
     except subprocess.CalledProcessError:
-        return None  # Not a valid git repo or an error occurred
+        print("No tag found for the current commit.")
+        return None
 
 
 @task(log_prints=True)
@@ -256,7 +254,7 @@ def c3dc_hub_data_loader(
     s3_bucket = secret[SUBMISSION_BUCKET]
 
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
-    pulled_model_branch = get_git_branch(repo_path="../c3dc-model/")
+    pulled_model_branch = get_git_tag(repo_path="../c3dc-model/")
     print(f"Provided model tag: {model_tag}")
     print(f"Pulled c3dc-model branch: {pulled_model_branch}")
     if model_tag == pulled_model_branch:
