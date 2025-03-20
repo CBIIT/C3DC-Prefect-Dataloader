@@ -253,10 +253,11 @@ def c3dc_hub_data_loader(
 
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
     pulled_model_branch = get_git_branch(repo_path="../c3dc-model/")
-    try:
-        model_tag == pulled_model_branch
+    print(f"Provided model tag: {model_tag}")
+    print(f"Pulled c3dc-model branch: {pulled_model_branch}")
+    if model_tag == pulled_model_branch:
         print("The model branch pulled is the same as the input model tag")
-    except:
+    else:
         print("The model branch pulled is not the same as the input model tag")
         print(f"The model branch pulled is {pulled_model_branch} and the input model tag is {model_tag}. Redeployment using the desired model tag is required.")
         raise ValueError("The model branch pulled is not the same as the input model tag")
