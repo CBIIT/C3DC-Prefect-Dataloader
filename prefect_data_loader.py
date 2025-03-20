@@ -15,6 +15,7 @@ from pytz import timezone
 import pkg_resources
 import inflect
 import yaml
+import subprocess
 
 NEO4J_URI = "neo4j_uri"
 NEO4J_PASSWORD = "neo4j_password"
@@ -32,8 +33,22 @@ def get_time() -> str:
     return dt_string
 
 
-def convert_false_to_string(value):
-    return "False" if value is False else value
+def get_git_branch(repo_path=".") -> str:
+    """_summary_
+
+    Args:
+        repo_path (str, optional): _description_. Defaults to ".".
+
+    Returns:
+        str: _description_
+    """    
+    try:
+        branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, text=True
+        ).strip()
+        return branch
+    except subprocess.CalledProcessError:
+        return None  # Not a valid git repo or an error occurred
 
 
 @task(log_prints=True)
@@ -235,6 +250,18 @@ def c3dc_hub_data_loader(
     uri = secret[NEO4J_URI]
     password = secret[NEO4J_PASSWORD]
     s3_bucket = secret[SUBMISSION_BUCKET]
+
+    # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
+    pulled_model_branch = get_git_branch(repo_path="../c3dc-model/")
+    try:
+        model_tag == pulled_model_branch
+        print("The model branch pulled is the same as the input model tag")
+    except:
+        print("The model branch pulled is not the same as the input model tag")
+        print(f"The model branch pulled is {pulled_model_branch} and the input model tag is {model_tag}. Redeployment using the desired model tag is required.")
+        raise ValueError("The model branch pulled is not the same as the input model tag")
+
+    # process metadata_folder if needed
     if not metadata_folder.endswith("/"):
         metadata_folder= metadata_folder + "/"
     else:
