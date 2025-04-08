@@ -250,6 +250,7 @@ def c3dc_hub_data_loader(
     uri = secret[NEO4J_URI]
     password = secret[NEO4J_PASSWORD]
     s3_bucket = secret[SUBMISSION_BUCKET]
+    print(os.listdir("../"))
 
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
     pulled_model_branch = get_git_tag(repo_path="../c3dc-model/")
