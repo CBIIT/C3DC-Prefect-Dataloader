@@ -253,7 +253,7 @@ def c3dc_hub_data_loader(
     print(os.listdir("../"))
 
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
-    pulled_model_branch = get_git_tag(repo_path="../c3dc-model/")
+    pulled_model_branch = get_git_tag(repo_path=f"../c3dc-model-{model_tag}/")
     print(f"Provided model tag: {model_tag}")
     print(f"Pulled c3dc-model tag: {pulled_model_branch}")
     if model_tag == pulled_model_branch:
@@ -279,8 +279,8 @@ def c3dc_hub_data_loader(
     upload_log_dir = f's3://{s3_bucket}/{runner}/{log_folder}/logs'
 
     schemas = [
-        f"../c3dc-model/model-desc/c3dc-model.yml",
-        f"../c3dc-model/model-desc/c3dc-model-props.yml",
+        f"../c3dc-model-{model_tag}/model-desc/c3dc-model.yml",
+        f"../c3dc-model-{model_tag}/model-desc/c3dc-model-props.yml",
     ]
     # hard coded value for C3DC
     domain_value = "clinicalcommons.ccdi.cancer.gov"
