@@ -29,9 +29,9 @@ pull:
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-  - name: C3DC-data-loading-DEV
+  - name: TEST-C3DC-data-loading-DEV
     version: null
-    tags: ["C3DC", "DEV", "TEST"]
+    tags: ["C3DC", "DEV", "V3", "TEST"]
     description: null
     schedule: {}
     flow_name: null
@@ -40,14 +40,14 @@ deployments:
       secret_name: "{{ prefect.variables.c3dc_dataloader_dev_secret_name }}"
       metadata_folder: ""
       runner: ""
-      model_tag: "2.1.0"
+      model_tag: "4.0.5"
       cheat_mode: False
       dry_run: False
       wipe_db: False
       mode: "upsert"
       split_transaction: True
     work_pool:
-      name: ccdi-c3dc-16gb
+      name: ccdi-c3dc-16gb-prefect-3.2.14-python3.9
       work_queue_name: default
       job_variables:
         env:
@@ -55,13 +55,13 @@ deployments:
     pull:
       - prefect.deployments.steps.git_clone:
           repository: https://github.com/CBIIT/c3dc-model.git
-          branch: 2.1.0
+          branch: 4.0.5
       - prefect.deployments.steps.git_clone:
           id: clone-step
           repository: https://github.com/CBIIT/C3DC-Prefect-Dataloader.git
-          branch: main
+          branch: update_requirements
           include_submodules: True
-      - prefect.projects.steps.pip_install_requirements:
+      - prefect.deployments.steps.pip_install_requirements:
           requirements_file: requirements.txt
           directory: "{{ clone-step.directory }}"
           stream_output: False
