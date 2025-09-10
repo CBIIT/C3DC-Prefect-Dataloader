@@ -29,9 +29,9 @@ pull:
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-  - name: TEST-C3DC-data-loading-DEV
+  - name: C3DC-data-loading-DEV
     version: null
-    tags: ["C3DC", "DEV", "V3", "TEST"]
+    tags: ["C3DC", "DEV", "V3", "Production"]
     description: null
     schedule: {}
     flow_name: null
@@ -59,7 +59,7 @@ deployments:
       - prefect.deployments.steps.git_clone:
           id: clone-step
           repository: https://github.com/CBIIT/C3DC-Prefect-Dataloader.git
-          branch: update_requirements
+          branch: main
           include_submodules: True
       - prefect.deployments.steps.pip_install_requirements:
           requirements_file: requirements.txt

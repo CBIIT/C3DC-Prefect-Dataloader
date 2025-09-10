@@ -6,13 +6,9 @@ sys.path.insert(0, os.path.abspath("./icdc-dataloader"))
 from loader import main
 from config import PluginConfig
 from bento.common.secret_manager import get_secret
-#import boto3
-#import json
-#from botocore.exceptions import ClientError
 from typing import Literal
 from datetime import datetime
 from pytz import timezone
-#import pkg_resources
 import inflect
 import yaml
 import subprocess
