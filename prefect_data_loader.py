@@ -6,13 +6,9 @@ sys.path.insert(0, os.path.abspath("./icdc-dataloader"))
 from loader import main
 from config import PluginConfig
 from bento.common.secret_manager import get_secret
-import boto3
-import json
-from botocore.exceptions import ClientError
 from typing import Literal
 from datetime import datetime
 from pytz import timezone
-import pkg_resources
 import inflect
 import yaml
 import subprocess
@@ -250,9 +246,10 @@ def c3dc_hub_data_loader(
     uri = secret[NEO4J_URI]
     password = secret[NEO4J_PASSWORD]
     s3_bucket = secret[SUBMISSION_BUCKET]
+    print(os.listdir("../"))
 
     # print the branch name of data model just to make sure the input model_tag and model branch pulled are the same
-    pulled_model_branch = get_git_tag(repo_path="../c3dc-model/")
+    pulled_model_branch = get_git_tag(repo_path=f"../c3dc-model-{model_tag}/")
     print(f"Provided model tag: {model_tag}")
     print(f"Pulled c3dc-model tag: {pulled_model_branch}")
     if model_tag == pulled_model_branch:
@@ -278,8 +275,8 @@ def c3dc_hub_data_loader(
     upload_log_dir = f's3://{s3_bucket}/{runner}/{log_folder}/logs'
 
     schemas = [
-        f"../c3dc-model/model-desc/c3dc-model.yml",
-        f"../c3dc-model/model-desc/c3dc-model-props.yml",
+        f"../c3dc-model-{model_tag}/model-desc/c3dc-model.yml",
+        f"../c3dc-model-{model_tag}/model-desc/c3dc-model-props.yml",
     ]
     # hard coded value for C3DC
     domain_value = "clinicalcommons.ccdi.cancer.gov"
