@@ -4,7 +4,7 @@
 
 # Generic metadata about this project
 name: C3DC Hub Data Loader
-prefect-version: 2.14.19
+prefect-version: 3.2.14
 
 # build section allows you to manage and build docker images
 build: null
